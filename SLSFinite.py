@@ -5,7 +5,7 @@ from scipy.linalg import block_diag
 class SLSFinite():
     def __init__(self, A_list, B_list, C_list):
         """
-        Stores the variables used for convex optimization in finite time system level synthesis framework.
+        Store the variables used for convex optimization in finite time system level synthesis framework.
     
         Parameters
         ----------
@@ -51,10 +51,10 @@ class SLSFinite():
 
     def SLP_constraints(self):
         """
-        Computes the system level parametrization constraints used in finite time system level synthesis.
+        Compute the system level parametrization constraints used in finite time system level synthesis.
 
-        Returns
-        -------
+        Return
+        ------
         SLP: list of 6 cvxpy.Constraint objects
             These are constraints on the Phi variables consisting of
             1. 2 affine system level parametrization constraints and
@@ -76,4 +76,11 @@ class SLSFinite():
         return SLP
 
     def optimal_controller(self):
+        """
+        Compute the controller F from the SLS parametrization in \Phi.
+
+        Return
+        ------
+        F: ndarray, shape ((T+1)*nu, (T+1)*ny)
+        """
         return self.Phi_uy.value - self.Phi_ux.value @ np.linalg.inv(self.Phi_xx.value) @ self.Phi_xy.value
