@@ -10,8 +10,8 @@ class SLSFinite():
         Parameters
         ----------
         A_list: list of matrices [A_0, ...A_T]
-        B_list: list of tensors [B_0, ...B_T]
-        C_list: list of tensors [C_0, ...C_T]
+        B_list: list of matrices [B_0, ...B_T]
+        C_list: list of matrices [C_0, ...C_T]
             where A_t, B_t, C_t are the matrices in the dynamics of the system at time t.
         
         Attributes
@@ -49,6 +49,12 @@ class SLSFinite():
         assert self.Z.shape[0] == self.cal_B.shape[0]
         assert self.Z.shape[0] == self.cal_C.shape[1]
 
+        # dependent variables
+        self.F = None
+        self.Phi_yx = None
+        self.Phi_yy = None
+        
+
     def SLP_constraints(self):
         """
         Compute the system level parametrization constraints used in finite time system level synthesis.
@@ -75,12 +81,11 @@ class SLSFinite():
                 self.Phi_uy == cp.multiply( self.Phi_uy, cp.kron(low_tri_bsupp, np.ones((self.nu, self.ny))) )]
         return SLP
 
-    def optimal_controller(self):
+    def calculate_dependent_variables(self):
         """
-        Compute the controller F from the SLS parametrization in \Phi.
-
-        Return
-        ------
-        F: ndarray, shape ((T+1)*nu, (T+1)*ny)
+        Compute the controller F, Phi_yx and Phi_yy from the independent varialbe Phi_matrix.
         """
-        return self.Phi_uy.value - self.Phi_ux.value @ np.linalg.inv(self.Phi_xx.value) @ self.Phi_xy.value
+        self.F = self.Phi_uy.value - self.Phi_ux.value @ np.linalg.inv(self.Phi_xx.value) @ self.Phi_xy.value
+        self.Phi_yx = self.cal_C @ self.Phi_xx
+        self.Phi_yy = self.cal_C @ self.Phi_xy + np.eye(self.cal_C.shape[0])
+        return

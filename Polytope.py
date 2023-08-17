@@ -94,6 +94,23 @@ def H_cube(c, r):
     assert H.shape[0] == h.shape[0]
     return Polytope(H, h)
 
-
-    
-
+def cart_H_cube(center_times, radius_times):
+    """
+    Paramters
+    ---------
+    center_times: list
+        list of centers
+    radius_times: list
+        list of radii
+    Returns
+    -------
+    Polytope
+        cartesian product of H_cubes with centers in center_times and radii in radius_times
+    """
+    assert len(center_times) == len(radius_times)
+    for i in range(len(center_times)):
+        if i == 0:
+            H = H_cube(center_times[0], radius_times[0])
+        else:
+            H = H.cart(H_cube(center_times[i], radius_times[i]))
+    return H
