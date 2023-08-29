@@ -29,15 +29,29 @@ class SLSFinite():
         self.nu = B_list[0].shape[1]
         self.ny = C_list[0].shape[0]
         # define optimization variables
-        self.Phi_xx = cp.Variable( ((self.T+1)*self.nx, (self.T+1)*self.nx) )
-        self.Phi_xy = cp.Variable( ((self.T+1)*self.nx, (self.T+1)*self.ny) )
-        self.Phi_ux = cp.Variable( ((self.T+1)*self.nu, (self.T+1)*self.nx) )
-        self.Phi_uy = cp.Variable( ((self.T+1)*self.nu, (self.T+1)*self.ny) )
+        def low_block_tri_variable(n, m, Tp1):
+            for i in range(Tp1):
+                add_var = cp.Variable((n, m*(i+1)))
+                if i == 0:
+                    var = cp.bmat([[add_var, np.zeros((n, m*(Tp1-(i+1))))]])
+                elif i == Tp1-1:
+                    var = cp.bmat([[var],
+                                   [add_var]
+                                   ])
+                else:
+                    var = cp.bmat([[var],
+                                   [add_var, np.zeros((n, m*(Tp1-(i+1))))]
+                                   ])
+            assert var.shape == (n*Tp1, m*Tp1)
+            return var
+        self.Phi_xx = low_block_tri_variable(self.nx, self.nx, self.T+1)
+        self.Phi_xy = low_block_tri_variable(self.nx, self.ny, self.T+1)
+        self.Phi_ux = low_block_tri_variable(self.nu, self.nx, self.T+1)
+        self.Phi_uy = low_block_tri_variable(self.nu, self.ny, self.T+1)
         self.Phi_matrix = cp.bmat( [[self.Phi_xx,   self.Phi_xy], 
                                     [self.Phi_ux,   self.Phi_uy]] )
         # define downshift operator
-        self.Z = np.block([
-                            [np.zeros([self.nx,self.T*self.nx]),    np.zeros([self.nx,self.nx])        ],
+        self.Z = np.block([ [np.zeros([self.nx,self.T*self.nx]),    np.zeros([self.nx,self.nx])        ],
                             [np.eye(self.T*self.nx),                np.zeros([self.T*self.nx, self.nx])]
                             ])
         # define block-diagonal matrices
@@ -89,3 +103,10 @@ class SLSFinite():
         self.Phi_yx = self.cal_C @ self.Phi_xx
         self.Phi_yy = self.cal_C @ self.Phi_xy + np.eye(self.cal_C.shape[0])
         return
+    
+    def F_to_Phi(self, F):
+        Phi_xx = np.linalg.inv( (np.eye(self.nx*(self.T+1)) - self.Z @ self.cal_A - self.Z @ self.cal_B @ F @ self.cal_C).astype('float') )
+        Phi_xy = Phi_xx.dot(self.Z).dot(self.cal_B).dot(F)
+        Phi_ux = F.dot(self.cal_C).dot(Phi_xx)
+        Phi_uy = F + F.dot(self.cal_C).dot(Phi_xx).dot(self.Z).dot(self.cal_B).dot(F)
+        return np.bmat([[Phi_xx, Phi_xy], [Phi_ux, Phi_uy]])
