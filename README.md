@@ -18,7 +18,7 @@ python simulation.py
 
 The figures and the file `simulationT20.pickle` containing the simulation data is saved in `simulation_results`.
 
-To run the code only reproducing the figures using the previously saved simulation data in `simulation_results`, run the following command:
+To run the code only reproducing the figures using the previously saved simulation data in `simulation_results/simulationT20.pickle`, run the following command:
 ~~~~
 python plots.py
 ~~~~
