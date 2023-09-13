@@ -281,7 +281,7 @@ print()
 print("--- Nuclear Norm -----------------------------------------------------")
 print("rank K:", SLS_nuc.rank_F_trunc)
 print("band (D,E) = messages:", SLS_nuc.E.shape[0])
-print("message times:", SLS_nuc.F_causal_row_basis)
+print("message times:", np.array(SLS_nuc.F_causal_row_basis)//2)
 
 print("max |K - K_trunc|:", np.max( np.abs(SLS_nuc.F - SLS_nuc.F_trunc) ) )
 print("max |Phi - Phi_trunc|:", np.max( np.abs(SLS_nuc.Phi_matrix.value - SLS_nuc.Phi_trunc) ) )

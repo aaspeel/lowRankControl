@@ -146,12 +146,13 @@ class SLSFinite():
         """
         Compute the controller F
         """
-        #F_test = self.Phi_uy.value - self.Phi_ux.value @ np.linalg.inv((self.Phi_xx.value).astype('float64')) @ self.Phi_xy.value
+        F_test = self.Phi_uy.value - self.Phi_ux.value @ np.linalg.inv((self.Phi_xx.value).astype('float64')) @ self.Phi_xy.value
         if key=="Reweighted Nuclear Norm" or key=="Reweighted Sensor Norm":
             self.F = np.linalg.inv( (np.eye(self.nu*(self.T+1)) + self.Phi_ux.value @ self.Z @ self.cal_B).astype('float64') ) @ self.Phi_uy.value
         elif key=="Reweighted Actuator Norm":
             self.F = self.Phi_uy.value @ np.linalg.inv( (np.eye(self.ny*(self.T+1)) + self.cal_C @ self.Phi_xy.value).astype('float64') )
-        #assert np.all(np.isclose( self.F.astype('float64'), F_test.astype('float64')) )
+        print(key + ':', np.max(np.abs(F_test - self.F)))
+        assert np.all(np.isclose( self.F.astype('float64'), F_test.astype('float64')) )
         filter = np.kron( np.tril(np.ones([self.T+1,self.T+1])) , np.ones([self.nu, self.ny]) )
         self.F = filter*self.F
         return

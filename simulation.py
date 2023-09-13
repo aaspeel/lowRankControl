@@ -50,7 +50,7 @@ Poly_w = H_cube(center_times[0], radius_times[0]).cart( H_cube([0,0,0,0], [wx_sc
 
 test_feas = True
 file = "simulation_results/simulationT20.pickle"
-save = False
+save = True
 # solve problem
 
 ### SIMULATION #########################################################################################################
@@ -111,7 +111,7 @@ SLS_act_reweighted = optimize_actuator_data[5][-1]
 print('Nuc time:', optimize_RTH_data[-1], 'Sen time:', optimize_sensor_data[-1], 'Act time:', optimize_actuator_data[-1])
 
 ### MAKE PLOTS ############################################################################################
-textsize=8
+textsize=10
 # Trajectory plots
 def plot_trajectory(w, Phi_row, n_dim, checkpoints, ax):
     traj = Phi_row @ w
@@ -161,6 +161,7 @@ for i in range(N_samples):
 ax1.set_xlim([-10,10])
 ax1.set_ylim([-10,10])
 ax1.locator_params(axis='both', nbins=5)
+ax1.tick_params(axis='both', labelsize=textsize)
 ax1.grid()
 if save:
     fig1.savefig("simulation_results/NuclearNormTrajPlot.pdf", bbox_inches="tight")
@@ -211,8 +212,8 @@ assert np.isclose(np.max(np.abs(SLS_act.F[-2:, :])), 0)
 assert np.isclose(np.max(np.abs(SLS_act.F[:, -2:])), 0)
 fig21 = plt.figure()
 gs21 = gridspec.GridSpec(2,2)
-axs24 = plt.subplot(gs21[0,0])
-axs23 = plt.subplot(gs21[0,1])
+axs23 = plt.subplot(gs21[0,0])
+axs24 = plt.subplot(gs21[0,1])
 axs23.spy(SLS_sen.F[0:-2,0:-2], epsilon, markersize=1, color='tab:green', label="$\mathbf{K}$")
 axs24.spy(SLS_act.F[0:-2,0:-2], epsilon, markersize=1, color='r', label="$\mathbf{K}$")
 axs23.set_xticks(np.arange(4,T*SLS_nuc.ny,5), np.arange(5,T*SLS_nuc.ny+1,5))
@@ -285,7 +286,7 @@ if save:
     fig3.savefig("simulation_results/ReweightingPlots.pdf", bbox_inches="tight")
 
 # final reweighting iteratation plots
-gs4 = gridspec.GridSpec(2,1, height_ratios=[1,1])
+gs4 = gridspec.GridSpec(3,1, height_ratios=[1,1,1])
 fig4 = plt.figure()
 axs40 = plt.subplot(gs4[0])
 [U, S, Vh] = np.linalg.svd(SLS_nuc.F)
@@ -297,13 +298,13 @@ act_norm_F = np.linalg.norm(SLS_act_reweighted.F, 2, 1)
 axs40.semilogy(np.arange(1,S.size+1), S,'s-', label='$\sigma_i(\mathbf{K})$', linewidth=0.5, markersize=5, color='b')
 axs40.semilogy(np.arange(1,act_norm_F.size+1), act_norm_F,'o-', label='$||\mathbf{K}_{(i,:)}||_2$', linewidth=0.5, markersize=5, color='r')
 axs40.semilogy(np.arange(1,sen_norm_F.size+1), sen_norm_F,'^-', label='$||\mathbf{K}_{(:,i)}||_2$', linewidth=0.5, markersize=5, color='tab:green')
-axs40.set_ylim([1e-28,1000])
+axs40.set_ylim([1e-18,1000])
 axs40.set_xlim([0,43])
 axs40.set_xlabel('index $i$', fontsize=10)
 axs40.tick_params(axis='both', labelsize=textsize)
 axs40.tick_params(axis='both', labelsize=textsize)
 axs40.grid()
-axs40.legend(fontsize=8, loc='lower center')
+axs40.legend(fontsize=8, loc='lower left')
 fig4.tight_layout()
 if save:
     fig4.savefig("simulation_results/ReweightingPlotsFinalIteration.pdf", bbox_inches="tight")
@@ -315,7 +316,7 @@ print()
 print("--- Nuclear Norm -----------------------------------------------------")
 print("rank K:", SLS_nuc.rank_F_trunc)
 print("band (D,E) = messages:", SLS_nuc.E.shape[0])
-print("message times:", SLS_nuc.F_causal_row_basis)
+print("message times:", np.array(SLS_nuc.F_causal_row_basis)//2)
 
 print("max |K - K_trunc|:", np.max( np.abs(SLS_nuc.F - SLS_nuc.F_trunc) ) )
 print("max |Phi - Phi_trunc|:", np.max( np.abs(SLS_nuc.Phi_matrix.value - SLS_nuc.Phi_trunc) ) )
