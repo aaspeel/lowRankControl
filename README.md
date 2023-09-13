@@ -2,7 +2,7 @@
 
 The code accompaning our joint ACC 2024 and IEEE L-CSS submission.
 
-Authors: Antoine Aspeel, Jakob Nylof, Jing Shuang (Lisa) Li and Necmiye Ozay
+**Authors:** Antoine Aspeel, Jakob Nylof, Jing Shuang (Lisa) Li and Necmiye Ozay
 
 The code reproduces the results in the section "Numberical Demonstrations" of the paper. In particular, the code:
 1. Solves the nuclear norm minimization problem and computes a causal factorization of the resulting optimal controller.
