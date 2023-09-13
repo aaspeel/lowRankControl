@@ -28,3 +28,11 @@ To run the code only reproducing the figures using the previously saved simulati
 python plots.py
 ~~~~
 
+## Appendix
+
+The following additional scripts are used when running the code.
+1. `SLSFinite.py` defines a class `SLSFinite` storing the optimization variables of the optimization problems, with a method computing the causal factorization.
+2. `Polytope.py` defines a class `Polytope` that allows taking products and powers of polytopes, which facilitates defining polytope containment constraints.
+3. `functions.py` defines the functions solving the respective optimization problems in steps 1 and 2.
+
+
