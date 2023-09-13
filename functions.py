@@ -4,7 +4,6 @@ from SLSFinite import *
 from Polytope import *
 import matplotlib.pyplot as plt
 import copy
-import sympy
 
 def polytope_constraints(SLS_data, Poly_x, Poly_u, Poly_w):
     # load SLS constraints
