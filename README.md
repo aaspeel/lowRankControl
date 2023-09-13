@@ -1,6 +1,6 @@
 # A Low Rank Approach to Minimize Sensor-to-Actuator Communication in Finite Horizon Output Feedback
 
-The code accompaning our ACC 2024 and IEEE L-CSS submission. The code implements the causal factorization algorithm that generates the figures
+The code accompaning our joint ACC 2024 and IEEE L-CSS submission. The code implements the causal factorization algorithm that generates the figures
 
 Authors: Antoine Aspeel, Jakob Nylof, Jing Shuang (Lisa) Li and Necmiye Ozay
 
