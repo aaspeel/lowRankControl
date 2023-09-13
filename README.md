@@ -1,6 +1,7 @@
 # A Low Rank Approach to Minimize Sensor-to-Actuator Communication in Finite Horizon Output Feedback
 
 The code accompaning our joint ACC 2024 and IEEE L-CSS submission.
+
 Authors: Antoine Aspeel, Jakob Nylof, Jing Shuang (Lisa) Li and Necmiye Ozay
 
 The code reproduces the results in the section "Numberical Demonstrations" of the paper. In particular, the code:
