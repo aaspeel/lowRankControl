@@ -31,7 +31,7 @@ python plots.py
 ## Appendix
 
 The following additional scripts are used by `simulation.py` and `plots.py`.
-1. `SLSFinite.py` defines a class `SLSFinite` storing the optimization variables of the optimization problems, with methods computing system level synthesis constraints and causal factorizations.
+1. `SLSFinite.py` defines a class `SLSFinite` storing the optimization variables of the optimization problems, with methods the computing system level synthesis constraint and the causal factorization.
 2. `Polytope.py` defines a class `Polytope` that allows taking products and powers of polytopes, which facilitates defining polytope containment constraints.
 3. `functions.py` defines the functions solving the respective optimization problems in steps 1 and 2.
 
