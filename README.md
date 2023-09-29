@@ -18,14 +18,14 @@ pip install -r requirements.txt
 ## Run
 To run the code solving the optimization problems for the nuclear norm, sensor norm and actuator norm cases and reproducing the results and figures in section "Numerical Demonstrations", run the following command:
 ~~~~
-python simulation.py
+python3 simulation.py
 ~~~~
 
 The figures and the file `simulationT20.pickle` containing the simulation data is saved in `simulation_results`.
 
 To run the code only reproducing the figures using the previously saved simulation data in `simulation_results/simulationT20.pickle`, run the following command:
 ~~~~
-python plots.py
+python3 plots.py
 ~~~~
 
 ## Appendix
