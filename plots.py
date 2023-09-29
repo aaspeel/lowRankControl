@@ -6,9 +6,13 @@ from Polytope import *
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.patches as patches
+import matplotlib
 import math
 
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 np.random.seed(1)
+
 T=20
 dt = 1
 A_0 = np.block([[np.zeros([2,2]), np.eye(2)], [np.zeros([2,2]), np.zeros([2,2])]])
@@ -81,6 +85,7 @@ textsize=10
 def plot_trajectory(w, Phi_row, n_dim, checkpoints, ax):
     traj = Phi_row @ w
     traj = traj.reshape((-1, n_dim))
+    #assert traj.shape == (21,n_dim)
     #print(x_traj)
     color = next(ax._get_lines.prop_cycler)['color']
     ax.plot(traj[:,0], traj[:,1], color = color, linewidth=0.5)
@@ -95,7 +100,7 @@ for i in box_check:
     rect = patches.Rectangle((center_times[i][0] - radius_times[i][0], center_times[i][1] - radius_times[i][1]), 2*radius_times[i][0], 2*radius_times[i][1], linewidth=1, edgecolor='k', facecolor= colors[counter], label='$\mathcal{X}_{' + str(i) + '}$')
     ax1.add_patch(rect)
     counter += 1
-ax1.legend()
+ax1.legend(fontsize=15)
 sign = [1, -1]
 
 N_corner = 10
@@ -263,13 +268,13 @@ act_norm_F = np.linalg.norm(SLS_act_reweighted.F, 2, 1)
 axs40.semilogy(np.arange(1,S.size+1), S,'s-', label='$\sigma_i(\mathbf{K})$', linewidth=0.5, markersize=5, color='b')
 axs40.semilogy(np.arange(1,act_norm_F.size+1), act_norm_F,'o-', label='$||\mathbf{K}_{(i,:)}||_2$', linewidth=0.5, markersize=5, color='r')
 axs40.semilogy(np.arange(1,sen_norm_F.size+1), sen_norm_F,'^-', label='$||\mathbf{K}_{(:,i)}||_2$', linewidth=0.5, markersize=5, color='tab:green')
-axs40.set_ylim([1e-18,1000])
+axs40.set_ylim([1e-19,1000])
 axs40.set_xlim([0,43])
 axs40.set_xlabel('index $i$', fontsize=10)
 axs40.tick_params(axis='both', labelsize=textsize)
 axs40.tick_params(axis='both', labelsize=textsize)
 axs40.grid()
-axs40.legend(fontsize=8, loc='lower left')
+axs40.legend(fontsize=10, loc='lower left')
 fig4.tight_layout()
 if save:
     fig4.savefig("simulation_results/ReweightingPlotsFinalIteration.pdf", bbox_inches="tight")

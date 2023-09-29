@@ -151,7 +151,7 @@ class SLSFinite():
             self.F = np.linalg.inv( (np.eye(self.nu*(self.T+1)) + self.Phi_ux.value @ self.Z @ self.cal_B).astype('float64') ) @ self.Phi_uy.value
         elif key=="Reweighted Actuator Norm":
             self.F = self.Phi_uy.value @ np.linalg.inv( (np.eye(self.ny*(self.T+1)) + self.cal_C @ self.Phi_xy.value).astype('float64') )
-        print(key + ':', np.max(np.abs(F_test - self.F)))
+        #print(key + ':', np.max(np.abs(F_test - self.F)))
         assert np.all(np.isclose( self.F.astype('float64'), F_test.astype('float64')) )
         filter = np.kron( np.tril(np.ones([self.T+1,self.T+1])) , np.ones([self.nu, self.ny]) )
         self.F = filter*self.F
@@ -188,10 +188,10 @@ class SLSFinite():
                     # add vector to E matrix
                     E = np.vstack([E, submat_new[row:row+1, :]])
                     # modify D matrix
-                    unit = np.zeros([1, rank_counter]) # E has shape (row+1,rank_counter)
+                    unit = np.zeros([1, rank_counter]) 
                     unit[0, -1] = 1. # add a 1 at the last column of unit
-                    D = np.hstack([D, np.zeros([row, 1])]) # E is (row, rank_counter)
-                    D = np.vstack([D, unit]) # E has (row+1, rank_counter)
+                    D = np.hstack([D, np.zeros([row, 1])]) # D is (row, rank_counter)
+                    D = np.vstack([D, unit]) # D is (row+1, rank_counter)
                     assert E.shape == (rank_counter, low_btri.shape[1])
                     assert D.shape == (row+1, rank_counter)
 
