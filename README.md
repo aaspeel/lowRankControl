@@ -2,6 +2,8 @@
 
 The code accompaning our joint ACC 2024 and IEEE L-CSS paper submission.
 
+IEEE: (https://ieeexplore.ieee.org/abstract/document/10336872)
+
 **Authors:** Antoine Aspeel, Jakob Nylof, Jing Shuang (Lisa) Li and Necmiye Ozay
 
 The code reproduces the results in the section "Numerical Demonstrations" of the paper. In particular, the code:
